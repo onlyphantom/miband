@@ -1,16 +1,7 @@
-"""
-- number of runs
-- total distance of walks
-- total distance of runs
-- total distance of walks + runs
-- show best runs (sort + head)
-- show best time for 1km, 2km 
-- line plot (smoothed) of 1km run time
-"""
-
 import pandas as pd
+from pyodide.http import open_url
 
-df = pd.read_csv("./data/jan2022_to_june2022.csv")
+df = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/sport.csv"))
 # walk is type 6, run is type 1
 runs = df[(df['type'] == 1) & (df['distance(m)'] >= 1000)].copy()
 num_of_runs = runs.shape[0] # 63
@@ -26,10 +17,4 @@ def create_m_s(seconds):
 
 runs['speed_per_km'] = runs['seconds_per_km'].map(lambda x: create_m_s(x))
 runs = runs.sort_values(by='seconds_per_km')
-print(runs.head())
-
-# print(runs[runs['distance(m)']< 1000].head())
-
-# best2km = 
-
-# print(runs[runs['distance(m)']>= 2000].head())
+print(runs.head().to_html())
