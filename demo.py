@@ -3,6 +3,7 @@
 - total distance of walks
 - total distance of runs
 - total distance of walks + runs
+
 - show best runs (sort + head)
 - show best time for 1km, 2km 
 - line plot (smoothed) of 1km run time
@@ -28,8 +29,4 @@ runs['speed_per_km'] = runs['seconds_per_km'].map(lambda x: create_m_s(x))
 runs = runs.sort_values(by='seconds_per_km')
 print(runs.head())
 
-# print(runs[runs['distance(m)']< 1000].head())
-
-# best2km = 
-
-# print(runs[runs['distance(m)']>= 2000].head())
+runs['distance_rounded'] = (runs['distance(m)'].round(decimals=-3)/1000).astype('category')

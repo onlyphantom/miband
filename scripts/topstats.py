@@ -2,13 +2,10 @@ import pandas as pd
 from pyodide.http import open_url
 
 df = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/jan2022_to_june2022.csv"))
-
 # walk is type 6, run is type 1
 runs = df[(df['type'] == 1) & (df['distance(m)'] >= 1000)].copy()
-
 num_of_runs = runs.shape[0] # 63
-total_walk_distance_km = df[df['type'] == 6]['distance(m)'].sum()/1000
-total_run_distance_km = runs['distance(m)'].sum()/1000
+print(num_of_runs)
 
 # runs['mins_per_km'] = runs['sportTime(s)'] / runs['distance(m)'] * 60
 runs['seconds_per_km'] = (1000 / runs['distance(m)']) * runs['sportTime(s)'] 
@@ -20,18 +17,4 @@ def create_m_s(seconds):
 
 runs['speed_per_km'] = runs['seconds_per_km'].map(lambda x: create_m_s(x))
 runs = runs.sort_values(by='seconds_per_km')
-
-toprows = [
-    num_of_runs, 
-    total_walk_distance_km, 
-    total_run_distance_km, 
-    total_walk_distance_km + total_run_distance_km
-    ]
-
-print(toprows)
-
-runs['distance_rounded'] = (runs['distance(m)'].round(decimals=-3)/1000).astype('category')
-
-
-
 print(runs.head().to_html())
