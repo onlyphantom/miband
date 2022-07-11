@@ -2,8 +2,8 @@ from datetime import timedelta
 import pandas as pd
 from pyodide.http import open_url
 
-df = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/jan2022_to_june2022.csv"))
-df['startTime'] = (df['startTime'] + timedelta(hours=7)).dt.strftime("%Y-%m-%d %H:%M")
+df = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/jan2022_to_june2022.csv"), parse_dates=['startTime'])
+df['date'] = (df['startTime'] + timedelta(hours=7)).dt.strftime("%Y-%m-%d %H:%M")
 
 # walk is type 6, run is type 1
 total_walk_distance_km = df[df['type'] == 6]['distance(m)'].sum()/1000
@@ -31,13 +31,16 @@ toprows = [
     total_walk_distance_km + total_run_distance_km
     ]
 
-print(toprows)
 
 # runs['distance_rounded'] = (runs['distance(m)'].round(decimals=-3)/1000).astype('category')
 runs['distance_rounded'] = (runs['distance(m)']//1000).astype('category')
 bestruns = runs.groupby('distance_rounded').head(3)
 print(bestruns.to_json())
 
-print(bestruns.to_html())
+print(bestruns.drop(columns=['startTime', 'sportTime(s)'], inplace=True).to_html())
 
 run_1km = runs[runs['distance_rounded'] == 1.0].sort_values(by='startTime')
+avg_speed = runs.groupby('distance_rounded')['seconds_per_km'].mean().map(lambda x: create_m_s(x)).to_json()
+toprows += [avg_speed]
+
+print(toprows)

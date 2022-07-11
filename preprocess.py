@@ -15,7 +15,7 @@ import pandas as pd
 
 
 df = pd.read_csv("./data/jan2022_to_june2022.csv", parse_dates=['startTime'])
-df['startTime'] = (df['startTime'] + timedelta(hours=7)).dt.strftime("%Y-%m-%d %H:%M")
+df['date'] = (df['startTime'] + timedelta(hours=7)).dt.strftime("%Y-%m-%d %H:%M")
 
 # walk is type 6, run is type 1
 runs = df[(df['type'] == 1) & (df['distance(m)'] >= 1000)].copy()
