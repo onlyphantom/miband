@@ -1,0 +1,9 @@
+/* typography */
+
+html {
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+thead th, tfoot th {
+  font-family: 'Rock Salt', cursive;
+}

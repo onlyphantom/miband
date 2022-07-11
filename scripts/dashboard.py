@@ -13,6 +13,9 @@ chart = alt.Chart(run_1km).mark_circle(
         alt.Y('seconds_per_km'),
         color='day(startTime):N',
         tooltip=['monthdate(startTime)', 'distance(m)', 'calories(kcal)', 'speed_per_km']
+    ).properties(
+        width=800,
+        height=300
     )
     
 chart + chart.transform_loess(
