@@ -8,16 +8,20 @@
     <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
     <py-env>
         - pandas
+        - altair
     </py-env>
     <title>Tracking Runs 🏃 with MiBand (MiFit)</title>
 </head>
 <body>
-    <div id="summary"></div>
+    <div id="stats"></div>
+    <hr>
+    <div id="dashboard"></div>
 
-    <py-script output="summary" src="./scripts/prepare.py">
+    <py-script output="stats" src="./scripts/getstats.py">
     </py-script>
 
-    
+    <py-script output="dashboard" src="./scripts/dashboard.py">
+    </py-script>
 
 </body>
 </html>
