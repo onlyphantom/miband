@@ -1,4 +1,5 @@
 from datetime import timedelta
+import json
 import pandas as pd
 from pyodide.http import open_url
 
@@ -25,9 +26,13 @@ runs = runs.sort_values(by='seconds_per_km')
 
 toprows = [
     num_of_runs, 
-    total_walk_distance_km, 
-    total_run_distance_km, 
-    total_walk_distance_km + total_run_distance_km
+    round(total_walk_distance_km,3), 
+    round(total_run_distance_km,3), 
+    round(total_walk_distance_km + total_run_distance_km,3),
+    [
+        runs['startTime'].min().strftime('%Y-%m-%d'),
+        runs['startTime'].max().strftime('%Y-%m-%d'),
+    ]
     ]
 
 
@@ -40,11 +45,18 @@ print(bestruns[['date', 'speed_per_km', 'calories(kcal)', 'distance_rounded']].s
 
 run_1km = runs[runs['distance_rounded'] == 1.0].sort_values(by='startTime')
 
+
+pb = runs.groupby('distance_rounded')['seconds_per_km'].agg(['mean', 'min']).rename_axis("distance(km)")
+pb['mean'] = pb['mean'].map(lambda x: create_m_s(x))
+pb['min'] = pb['min'].map(lambda x: create_m_s(x))
+
 # alt: runs.groupby('distance_rounded')['seconds_per_km'].agg(
 # ['mean', 'min']).reset_index()
-avg_speed = runs.groupby('distance_rounded')['seconds_per_km'].mean().map(lambda x: create_m_s(x)).to_json()
-top_speed = runs.groupby('distance_rounded')['seconds_per_km'].min().map(lambda x: create_m_s(x)).to_json()
+avg_speed = pb.loc[:,'mean'].to_json()
+top_speed = pb.loc[:,'min'].to_json()
 
 toprows += [{'avg_speed': avg_speed, 'top_speed': top_speed}]
+print(json.dumps(toprows))
 
-print(toprows)
+print("<h4>Personal Best</h4>")
+print(pb.reset_index().to_html(index=False, table_id="personalbest", justify="justify", classes=['table table-dark table-striped table-bordered']))

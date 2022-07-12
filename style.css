@@ -6,4 +6,10 @@ html {
 
 thead th, tfoot th {
   font-family: 'Rock Salt', cursive;
+  font-weight: 700;
+}
+
+.text-end {
+    font-family: 'Rock Salt', cursive;
+    font-size: 0.7em;
 }
