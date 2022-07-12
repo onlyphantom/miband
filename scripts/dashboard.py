@@ -3,6 +3,9 @@ import altair as alt
 from pyodide.http import open_url
 
 run_1km = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/run_1km.csv"))
+# remove 1% percentile as outlier
+run_1km = run_1km[run_1km['seconds_per_km'] < run_1km['seconds_per_km'].quantile(0.99)]
+
 
 alt.renderers.set_embed_options(theme='dark')
 
@@ -30,24 +33,6 @@ points = base.mark_circle().encode(
     highlight
 )
 
-# chart = alt.Chart(run_1km).mark_circle().encode(
-#     alt.X('startTime:T', title='Date', axis=alt.Axis(format='%Y-%m-%d', grid=False)),
-#     alt.Y('seconds_per_km', axis=alt.Axis(title='', grid=False)),
-#     tooltip=['monthdate(startTime)', 'distance(m)', 'calories(kcal)', 'speed_per_km'],
-#     opacity=0.4,
-# ).add_selection(
-#     highlight
-# ).properties(
-#     # width=800,
-#     # height=300
-# )
-    
-
-
-# chart + chart.transform_loess(
-#         'startTime',
-#         'seconds_per_km',).interactive()
-# 
 lines = base.mark_line().encode(
     size=alt.condition(~highlight, alt.value(1), alt.value(3))
 )
@@ -58,16 +43,21 @@ lines = base.mark_line().encode(
 grid = alt.Chart(run_1km).mark_rect().encode(
     alt.X('date(startTime):O', title='Date', axis=alt.Axis(grid=False)),
     alt.Y('month(startTime):O', title='Month', axis=alt.Axis(title='', grid=False)),
-    color='mean(seconds_per_km):Q'
+    color=alt.Color(
+        'mean(seconds_per_km):Q', 
+        legend=alt.Legend(title='Avg Speed')
+    ),
+    tooltip=['monthdate(startTime)', 'distance(m)', 'calories(kcal)', 'speed_per_km'],
 ).interactive()
 
 bubble = alt.Chart(run_1km).mark_circle().encode(
     alt.X('date(startTime):O', title='Day of Week', axis=alt.Axis(grid=False)),
     alt.Y('month(startTime):O', title='Month', axis=alt.Axis(title='', grid=False)),
-    color=alt.Color("min(seconds_per_km):Q",
-        legend=None
-    ),
-    size=alt.Size("seconds_per_km:Q", legend=None) 
+    size=alt.Size("seconds_per_km:Q", 
+        legend=None, 
+        scale=alt.Scale(range=[1, 500], domain=[300, run_1km['seconds_per_km'].min()])), 
+    color=alt.Color("seconds_per_km:Q", legend=None),
+        tooltip=['monthdate(startTime)', 'distance(m)', 'calories(kcal)', 'speed_per_km'],
 ).interactive()
 
 

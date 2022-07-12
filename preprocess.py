@@ -8,6 +8,7 @@
 - show best time for 1km, 2km 
 - line plot (smoothed) of 1km run time
 - calendar plot / bubble plot
+    - show PB days
 - runs by time of day (6pm, 7pm etc)
 """
 from datetime import timedelta
