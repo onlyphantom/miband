@@ -4,6 +4,9 @@ A personal dashboard to visualize my runs data collected from Mi Band / Mi Fit.
 
 It's not fanciful, but it clearly displays all the key statistics I care for, and it's incredibly easy to deploy thanks to the power of PyScript (Python in the browser) and Altair.
 
+Live Demo: [Mi Band analytics dashboard](https://onlyphantom.github.io/miband/)
+
+
 The dashboard is fully responsive / mobile-friendly. If you'd like to see how I build it, follow the [PyScript tutorial series on YouTube](https://www.youtube.com/watch?v=Qo8dXyKXyME&list=PLXsFtK46HZxXS9yBHkQXvaw1eLSIS5Mb-&index=1) where I demonstrate how to build tools with PyScript.
 
 I have some ideas I have yet to incorporate into the app, and will do so gradually over the near future. You can Star the project to follow its progress, or subscribe to me on YouTube to follow me on this journey.
@@ -15,7 +18,7 @@ I have some ideas I have yet to incorporate into the app, and will do so gradual
 
 
 #### Exporting Data from Xiaomi Mi Fit / Mi Band
-The data is exported from the MiFit service (Accounts > Settings > About > Personal Information Security > Exercising User Rights > Export).
+The data is exported from the Mi Fit service (Accounts > Settings > About > Personal Information Security > Exercising User Rights > Export).
 
 > The Mi Fit app might have been renamed to Zepp Life.
 

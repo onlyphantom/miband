@@ -2,12 +2,13 @@ import pandas as pd
 import altair as alt
 from pyodide.http import open_url
 
-run_1km = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/run_1km.csv"))
+alt.renderers.set_embed_options(theme='dark')
+
+run_1km = pd.read_csv(open_url("https://raw.githubusercontent.com/onlyphantom/miband/main/data/run_1km.csv"), parse_dates=['startTime'])
 # remove 1% percentile as outlier
 run_1km = run_1km[run_1km['seconds_per_km'] < run_1km['seconds_per_km'].quantile(0.99)]
 
 
-alt.renderers.set_embed_options(theme='dark')
 
 highlight = alt.selection(type='single', on='mouseover',
                           fields=['day'], nearest=True)
@@ -17,8 +18,8 @@ base = alt.Chart(run_1km).encode(
     alt.Y('seconds_per_km', axis=alt.Axis(title='', grid=False)),
     # color=alt.Color('day(startTime):N', title='Day of Week'),
     color=alt.Color('day:N', 
-        title='Day of Week', 
-        legend=alt.Legend(title='Day of Week', orient='bottom-left', formatType='time', format='%A'),
+        legend=alt.Legend(title='Day of Week', 
+            orient='bottom-left', formatType='time', format='%A'),
     ),
 ).transform_timeunit(
     day='day(startTime)',
@@ -57,7 +58,7 @@ bubble = alt.Chart(run_1km).mark_circle().encode(
         legend=None, 
         scale=alt.Scale(range=[1, 500], domain=[300, run_1km['seconds_per_km'].min()])), 
     color=alt.Color("seconds_per_km:Q", legend=None),
-        tooltip=['monthdate(startTime)', 'distance(m)', 'calories(kcal)', 'speed_per_km'],
+    tooltip=['monthdate(startTime)', 'distance(m)', 'calories(kcal)', 'speed_per_km'],
 ).interactive()
 
 

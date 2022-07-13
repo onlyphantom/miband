@@ -41,9 +41,9 @@ runs['distance_rounded'] = (runs['distance(m)']//1000).astype('category')
 bestruns = runs.groupby('distance_rounded').head(3)
 # print(bestruns.to_json())
 
-print(bestruns[['date', 'speed_per_km', 'calories(kcal)', 'distance_rounded']].set_index('date').reset_index().to_html(index=False, col_space=[100,50,50,50], table_id="bestruns", justify="justify", classes=['table table-dark table-striped table-bordered']))
-
-run_1km = runs[runs['distance_rounded'] == 1.0].sort_values(by='startTime')
+print(bestruns[['date', 'speed_per_km', 'calories(kcal)', 'distance_rounded']].set_index(
+    'date').reset_index().to_html(index=False, col_space=[100,50,50,50], 
+    table_id="bestruns", justify="justify", classes=['table table-dark table-striped table-bordered']))
 
 
 pb = runs.groupby('distance_rounded')['seconds_per_km'].agg(['mean', 'min']).rename_axis("distance(km)")
@@ -59,4 +59,5 @@ toprows += [{'avg_speed': avg_speed, 'top_speed': top_speed}]
 print(json.dumps(toprows))
 
 print("<h4>Personal Best</h4>")
-print(pb.reset_index().to_html(index=False, table_id="personalbest", justify="justify", classes=['table table-dark table-striped table-bordered']))
+print(pb.reset_index().to_html(index=False, table_id="personalbest", 
+    justify="justify", classes=['table table-dark table-striped table-bordered']))
