@@ -9,6 +9,8 @@ Live Demo: [Mi Band analytics dashboard](https://onlyphantom.github.io/miband/)
 
 The dashboard is fully responsive / mobile-friendly. If you'd like to see how I build it, follow the [PyScript tutorial series on YouTube](https://www.youtube.com/watch?v=Qo8dXyKXyME&list=PLXsFtK46HZxXS9yBHkQXvaw1eLSIS5Mb-&index=1) where I demonstrate how to build tools with PyScript.
 
+You can also [build this along with me](https://youtu.be/3mfqTGs05cE) on YouTube.
+
 I have some ideas I have yet to incorporate into the app, and will do so gradually over the near future. You can Star the project to follow its progress, or subscribe to me on YouTube to follow me on this journey.
 
 ### Gallery
